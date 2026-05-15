@@ -2,7 +2,7 @@
 from .evaluator import NormalizationEvaluator
 
 # Define the version in one place
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 # Explicitly define what is exported
 __all__ = ["NormalizationEvaluator"]

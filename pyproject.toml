@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "normeval"
+version = "0.1.0"
+authors = [
+  { name="Md Abdullah Al Kafi", email="kafi.cse@diu.edu.bd" },
+]
+description = "A scientific suite for evaluating text normalization algorithms."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "python-Levenshtein",
+    "matplotlib",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/abkafi1234/normeval"

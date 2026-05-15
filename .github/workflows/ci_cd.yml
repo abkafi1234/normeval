@@ -1,1 +1,62 @@
 
+name: CI & CD
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # --- JOB 1: Validation ---
+  validate:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # Testing across multiple versions to ensure compatibility
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install package
+      run: |
+        python -m pip install --upgrade pip
+        pip install .
+        
+    - name: Smoke Test (Verify Import)
+      run: |
+        # This ensures the package installs and the __init__.py works
+        python -c "import normeval; print('Package imported successfully!')"
+
+  # --- JOB 2: Build & Publish (Only on Tags/Releases) ---
+  publish:
+    needs: validate
+    if: startsWith(github.ref, 'refs/tags')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # Mandatory for Trusted Publishing via PyPI
+      contents: read
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.10"
+
+    - name: Build binary wheel and source tarball
+      run: |
+        pip install build
+        python -m build
+
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1

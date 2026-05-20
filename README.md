@@ -94,8 +94,9 @@ print(results)
 
 - **Function:** `calculate_aes(cr, irs)`
 - **What it is:** A harmonic mean balancing Compression (CR) and Preservation (IRS).
-- **The Math:**  
-  `AES = (2 × IRS × CR) / (IRS + CR)`
+- **The Math:**
+  `VRG = 1-1/CR`
+  `AES = (2 × IRS × VRG) / (IRS + VRG)`
 - **Interpretation:** Punishes algorithms that are:
   - Too aggressive (High CR, low IRS)
   - Too passive (High IRS, low CR)

@@ -174,17 +174,43 @@ class NormalizationEvaluator:
         return irs
         
     def calculate_aes(self, cr, irs):
-        """
-        Calculates the Algorithm Effectiveness Score (AES).
-        Formula: Harmonic mean of CR and IRS.
-        """
-        if cr is None or irs is None or (cr + irs) == 0:
-            return 0.0
+            """
+            Calculates the corrected Algorithm Effectiveness Score (AES).
             
-        aes = (2 * irs * cr) / (irs + cr)
-        print(f"Algorithm Effectiveness Score (AES): {aes:.4f}")
-        
-        return aes
+            Formula:
+                VRG = 1.0 - (1.0 / CR) if CR >= 1.0 else 0.0
+                AES = (2 * IRS * VRG) / (IRS + VRG)
+                
+            Domain:
+                Bounds both components strictly within [0, 1] to prevent 
+                scale dominance during harmonic fusion.
+            """
+            # 1. Structural Null Defense
+            if cr is None or irs is None:
+                print("Warning: Calculation halted. CR or IRS contains null values.")
+                return 0.0
+            
+            # 2. Boundary Verification & Transformation
+            # If an algorithm anomalously expands vocabulary (CR < 1.0), Gain is clamped to 0.0
+            if cr < 1.0:
+                vrg = 0.0
+            else:
+                vrg = 1.0 - (1.0 / float(cr))
+                
+            # Ensure IRS adheres strictly to semantic probability boundaries [0, 1]
+            irs_clamped = max(0.0, min(1.0, float(irs)))
+            
+            # 3. Dynamic Denominator Defense
+            denominator = irs_clamped + vrg
+            if denominator == 0.0:
+                print("AES Calculation: Absolute baseline failure (IRS + VRG = 0). Returning 0.0")
+                return 0.0
+                
+            # 4. Harmonic Mean Execution
+            aes = (2.0 * irs_clamped * vrg) / denominator
+            
+            print(f"AES (Corrected): {aes:.4f} | Derived VRG: {vrg:.4f} | Checked IRS: {irs_clamped:.4f}")
+            return aes
         
     def calculate_anld(self):
         """

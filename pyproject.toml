@@ -25,7 +25,6 @@ dependencies = [
     "python-Levenshtein",
     "matplotlib",
     "lowresnltk",
-    "difflib"
 ]
 
 [project.urls]

@@ -3,7 +3,7 @@
 [![PyPI version](https://badge.fury.io/py/normeval.svg)](https://badge.fury.io/py/normeval)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![EMNLP 2026](https://img.shields.io/badge/EMNLP-2026-red.svg)](https://2026.emnlp.org)
+<!--[![EMNLP 2026](https://img.shields.io/badge/EMNLP-2026-red.svg)](https://2026.emnlp.org)-->
 
 A modular, language-agnostic evaluation framework for text normalization pipelines. Given an original corpus and its normalized counterpart, **NormEval** returns five intrinsic metrics and three downstream performance signals from a single call — or from individual function calls if you only need part of the picture.
 
